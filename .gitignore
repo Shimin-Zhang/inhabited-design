@@ -1,0 +1,17 @@
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.swp
+*~
+.idea/
+.vscode/
+
+# Per-session run artifacts the skill generates in the *target project* (never the skill
+# itself). Listed here as a guard in case a run is ever executed from inside this repo.
+sampling.md
+pipeline_status.md
+inhabited.md
+claude_*.md
+borrowings_*.md
+borrowings_v*.md
+layout_sketch_*.md
