@@ -49,14 +49,26 @@ the orchestration map.
 
 ## Installation
 
-This is a Claude Code Agent Skill. Place the directory where Claude Code discovers skills:
+This repo is both a Claude Code **plugin marketplace** and the plugin it serves.
+
+### Plugin marketplace (recommended — gives you updates)
+
+```text
+/plugin marketplace add Shimin-Zhang/inhabited-design
+/plugin install inhabited-design@inhabited-design
+```
+
+Pull future updates with `/plugin marketplace update inhabited-design`.
+
+### Manual install
+
+Copy just the skill directory into a skills path Claude Code scans:
 
 ```bash
-# personal skills
-cp -r inhabited-design ~/.claude/skills/
-
-# or, per-project
-cp -r inhabited-design <your-project>/.claude/skills/
+git clone https://github.com/Shimin-Zhang/inhabited-design.git
+cp -r inhabited-design/skills/inhabited-design ~/.claude/skills/   # personal
+# or, per-project:
+cp -r inhabited-design/skills/inhabited-design <your-project>/.claude/skills/
 ```
 
 Then invoke it in a Claude Code session (see triggers below). Run
@@ -84,10 +96,15 @@ the inspiration," "use IFG/VS,"* or an explicit *"use inhabited-design."*
 ## Repository layout
 
 ```
-SKILL.md            Orchestration map — the 14-step pipeline and all hard gates
-references/         21 protocol files, one per discipline (the source of truth each step reads)
-LICENSE             Apache License 2.0
-NOTICE.md           Attribution and inspirations
+.claude-plugin/
+  marketplace.json          Marketplace catalog (lists this one plugin)
+  plugin.json               Plugin manifest
+skills/
+  inhabited-design/
+    SKILL.md                Orchestration map — the 14-step pipeline and all hard gates
+    references/             21 protocol files, one per discipline (source of truth per step)
+LICENSE                     Apache License 2.0
+NOTICE.md                   Attribution and inspirations
 ```
 
 ## Acknowledgments
@@ -101,8 +118,8 @@ attribution.
 - [**impeccable**](https://github.com/pbakaus/impeccable) by Paul Bakaus — committed
   design choices and a curated anti-pattern catalog.
 
-It builds on the **Verbalized Sampling (VS)** method and the related **Inference-time
-Family Guidance (IFG)** framing.
+It builds on the **Verbalized Sampling (VS)** method ([arXiv:2510.01171](https://arxiv.org/abs/2510.01171))
+and the related **Intent Factored Generation (IFG)** method ([arXiv:2506.09659](https://arxiv.org/abs/2506.09659)).
 
 ## License
 

@@ -15,9 +15,13 @@ supporting protocol files under `references/`).
 
 The pipeline operationalizes the **Verbalized Sampling (VS)** method — enumerate a
 candidate pool, verbalize each candidate's fit or failure against the brief, then
-draw a deterministic sample from the surviving pool — and the related **Inference-time
-Family Guidance (IFG)** framing. These methods inform the design of this skill; no
-third-party source code is included or redistributed here.
+draw a deterministic sample from the surviving pool — and the related **Intent
+Factored Generation (IFG)** method, which samples a semantically dense intent first
+and conditions the final generation on it. These methods inform the design of this
+skill; no third-party source code is included or redistributed here.
+
+- Verbalized Sampling (2025) — arXiv:2510.01171
+- Intent Factored Generation (2025) — arXiv:2506.09659
 
 ## Inspirations
 

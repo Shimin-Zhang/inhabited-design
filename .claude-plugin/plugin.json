@@ -1,0 +1,13 @@
+{
+  "name": "inhabited-design",
+  "description": "Builds polished, target-user-rated web apps/pages/tools/assets via Verbalized Sampling at every design input — framing, designer voice, seeds, constraint, competitors, typography.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Shimin Zhang"
+  },
+  "homepage": "https://github.com/Shimin-Zhang/inhabited-design",
+  "repository": "https://github.com/Shimin-Zhang/inhabited-design",
+  "license": "Apache-2.0",
+  "keywords": ["design", "frontend", "ui", "ux", "verbalized-sampling", "skill"],
+  "skills": "./skills/"
+}
