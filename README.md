@@ -1,4 +1,4 @@
-# inhabited-design-vs
+# inhabited-design
 
 A [Claude Code](https://claude.com/claude-code) Agent Skill that turns *"build me X for
 Y"* into a polished, target-user-rated web app, page, tool, or asset — where **every
@@ -53,14 +53,14 @@ This is a Claude Code Agent Skill. Place the directory where Claude Code discove
 
 ```bash
 # personal skills
-cp -r inhabited-design-vs ~/.claude/skills/
+cp -r inhabited-design ~/.claude/skills/
 
 # or, per-project
-cp -r inhabited-design-vs <your-project>/.claude/skills/
+cp -r inhabited-design <your-project>/.claude/skills/
 ```
 
 Then invoke it in a Claude Code session (see triggers below). Run
-`/inhabited-design-vs auto` for non-interactive execution; the default is interactive,
+`/inhabited-design auto` for non-interactive execution; the default is interactive,
 pausing to present and confirm each VS pick.
 
 ## When to use
@@ -72,7 +72,7 @@ pausing to present and confirm each VS pick.
 - Typography is contentious and a reflex-ban list isn't enough
 
 It triggers on phrases like *"iterate to a perfect score," "no canon," "really diversify
-the inspiration," "use IFG/VS,"* or an explicit *"use inhabited-design-vs."*
+the inspiration," "use IFG/VS,"* or an explicit *"use inhabited-design."*
 
 ## When not to use
 

@@ -100,7 +100,7 @@ Every override is logged with the original sampled pick alongside the final acce
 
 ## Auto mode
 
-Invoke `/inhabited-design-vs auto` to skip the present + confirm pauses. All VS Steps 2–10 fire through without confirmation; audit trail records `mode: auto` at the top of `sampling.md`. Full details: SKILL.md §Auto mode.
+Invoke `/inhabited-design auto` to skip the present + confirm pauses. All VS Steps 2–10 fire through without confirmation; audit trail records `mode: auto` at the top of `sampling.md`. Full details: SKILL.md §Auto mode.
 
 ## Status-write integration
 

@@ -1,12 +1,12 @@
 ---
-name: inhabited-design-vs
-description: Builds polished, target-user-rated web apps/pages/tools/assets via Verbalized Sampling at every input — framing, designer voice, seeds, constraint, competitors, typography. Use when you want every design choice to trace to a deterministic random sample drawn from an enumerated pool rather than model reach. Triggers on phrases like "iterate to a perfect score," "no canon," "really diversify the inspiration," "use IFG/VS," or explicit "use inhabited-design-vs."
+name: inhabited-design
+description: Builds polished, target-user-rated web apps/pages/tools/assets via Verbalized Sampling at every input — framing, designer voice, seeds, constraint, competitors, typography. Use when you want every design choice to trace to a deterministic random sample drawn from an enumerated pool rather than model reach. Triggers on phrases like "iterate to a perfect score," "no canon," "really diversify the inspiration," "use IFG/VS," or explicit "use inhabited-design."
 user-invocable: true
 argument-hint: "[auto]"
 license: Apache 2.0. See NOTICE.md for attribution.
 ---
 
-# inhabited-design-vs
+# inhabited-design
 
 A pipeline that turns "build me X for Y" into something that hits target-user-rated perfect scores, with every input derived through Verbalized Sampling — the model enumerates candidates, verbalizes why each fits or fails the brief, then samples deterministically from the surviving pool via an external Bash gate. The framing sentence is the master conditioning variable: every downstream VS step (designer, seeds, constraint, competitors, typography) is conditioned on it, so variance is coherent rather than noisy. All depth lives in the protocol files in `references/`; this file is the orchestration map.
 
@@ -31,7 +31,7 @@ A pipeline that turns "build me X for Y" into something that hits target-user-ra
 
 ## Setup
 
-Read `inhabited.md` (or run the teach flow to write one), confirm the product register in one phrase model-side, set mode via `/inhabited-design-vs auto` for non-interactive execution (default is interactive). ICP specificity is the strongest reproducibility lever — "designer for a fitness app targeting first-time marathoners in the Midwest" produces tighter output than "designer for fitness apps."
+Read `inhabited.md` (or run the teach flow to write one), confirm the product register in one phrase model-side, set mode via `/inhabited-design auto` for non-interactive execution (default is interactive). ICP specificity is the strongest reproducibility lever — "designer for a fitness app targeting first-time marathoners in the Midwest" produces tighter output than "designer for fitness apps."
 
 ## The six VS-sampled inputs
 
@@ -110,7 +110,7 @@ Other gates (inspiration-bank composition, anti-default research, typography-VS,
 
 ## Auto mode
 
-Invoke as `/inhabited-design-vs auto`. VS Steps 2–10 run non-interactively — candidates enumerated, reasoning verbalized, ms-sample picks logged to `sampling.md` without confirmation pauses. Output is identical to interactive mode in VS provenance and determinism. Users can interrupt at any point and switch to interactive for remaining steps; document the switch in `sampling.md`. Full procedure: `sampling-protocol.md` §Auto mode.
+Invoke as `/inhabited-design auto`. VS Steps 2–10 run non-interactively — candidates enumerated, reasoning verbalized, ms-sample picks logged to `sampling.md` without confirmation pauses. Output is identical to interactive mode in VS provenance and determinism. Users can interrupt at any point and switch to interactive for remaining steps; document the switch in `sampling.md`. Full procedure: `sampling-protocol.md` §Auto mode.
 
 ## Common pitfalls
 

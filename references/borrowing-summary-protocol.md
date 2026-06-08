@@ -1,6 +1,6 @@
 # Borrowing summary protocol
 
-The discipline that converts "borrowing X from this" lines into **per-iteration pixel-traceable evidence** of each visual element transferred from each reference and each competitor to the build. In the inhabited-design-vs skill this protocol has two parts: the **per-reference borrowing log** (inherited from the parent skill) and the **per-competitor converge/diverge table** (new in this skill, required by `competitor-vs-protocol.md` and scored by the critic via `adversarial-critic-protocol.md` §fits competitor judgment).
+The discipline that converts "borrowing X from this" lines into **per-iteration pixel-traceable evidence** of each visual element transferred from each reference and each competitor to the build. In the inhabited-design skill this protocol has two parts: the **per-reference borrowing log** (inherited from the parent skill) and the **per-competitor converge/diverge table** (new in this skill, required by `competitor-vs-protocol.md` and scored by the critic via `adversarial-critic-protocol.md` §fits competitor judgment).
 
 ---
 
@@ -218,7 +218,7 @@ The per-axis output decomposition (`axis-decomposition-protocol.md`) requires th
 
 The v5 axis-decomposition protocol restricts the context per sub-pass — when generating `imagery`, the Designer subagent only sees framing + seeds + designer + constraint, not typography or competitors. The attribute-binding manifest is the **paper trail** that proves the restricted-context discipline was honored: each output element traces explicitly to the inputs that should have produced it.
 
-T2I attribute-binding papers (Attend-and-Excite, T2I-CompBench) showed that explicit attribute-binding annotations improve compositional fidelity because they force the model to commit to a specific axis-output mapping rather than averaging. v5 imports this into the inhabited-design-vs output protocol.
+T2I attribute-binding papers (Attend-and-Excite, T2I-CompBench) showed that explicit attribute-binding annotations improve compositional fidelity because they force the model to commit to a specific axis-output mapping rather than averaging. v5 imports this into the inhabited-design output protocol.
 
 The critic uses the manifest to score factor 4 (`fits axis manifestation` in `adversarial-critic-protocol.md`): does each output element actually reflect the specific sampled axes it claims to derive from?
 

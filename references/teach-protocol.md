@@ -7,7 +7,7 @@ A one-time per-project setup that captures the **stable** design context (App X,
 Run **once per project**, before the first sampling step. Subsequent invocations on the same project skip the teach flow and proceed directly to sampling.
 
 Re-run only when:
-- The user explicitly asks (`/inhabited-design-vs teach` or "update the design context")
+- The user explicitly asks (`/inhabited-design teach` or "update the design context")
 - `inhabited.md` is missing a required section (older format / partial fill)
 - The user's request implies a change to the stable context ("we're pivoting from runners to cyclists" — re-run, don't paper over)
 

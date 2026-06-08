@@ -1,6 +1,6 @@
 # NOTICE
 
-inhabited-design-vs
+inhabited-design
 Copyright 2026 Shimin Zhang
 
 This product is licensed under the Apache License, Version 2.0 (the "License").
@@ -9,7 +9,7 @@ http://www.apache.org/licenses/LICENSE-2.0.
 
 ## Attribution
 
-`inhabited-design-vs` is original work by Shimin Zhang. It is a [Claude Code](https://claude.com/claude-code)
+`inhabited-design` is original work by Shimin Zhang. It is a [Claude Code](https://claude.com/claude-code)
 skill and follows the Agent Skills format (a `SKILL.md` orchestration map plus
 supporting protocol files under `references/`).
 
@@ -21,7 +21,7 @@ third-party source code is included or redistributed here.
 
 ## Inspirations
 
-`inhabited-design-vs` is an independent work that draws conceptual inspiration from
+`inhabited-design` is an independent work that draws conceptual inspiration from
 the following skills. No source code or assets from these projects are bundled or
 redistributed here; they are acknowledged as design influences.
 

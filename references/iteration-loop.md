@@ -1,6 +1,6 @@
 # Iteration loop protocol
 
-File conventions, subagent prompt templates, and the loop logic for the inhabited-design-vs skill.
+File conventions, subagent prompt templates, and the loop logic for the inhabited-design skill.
 
 ## Directory structure
 
