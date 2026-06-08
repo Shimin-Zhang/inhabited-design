@@ -11,7 +11,7 @@
     {
       "name": "inhabited-design",
       "source": "./",
-      "description": "Builds polished web apps/pages/tools/assets via Verbalized Sampling at every design input.",
+      "description": "Builds polished web apps/pages/tools/assets via Verbalized Sampling at every design input; grounded in the VS and Intent Factored Generation (IFG) methods.",
       "version": "1.0.0",
       "author": {
         "name": "Shimin Zhang"
