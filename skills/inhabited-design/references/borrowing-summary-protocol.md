@@ -8,7 +8,7 @@ The discipline that converts "borrowing X from this" lines into **per-iteration 
 
 For each iteration of the build:
 
-- **Critic loop (v1, v2 …):** write `borrowings_v{cycle}.md` at the project root. One file per critic cycle; update in-place if the cycle restarts on the same build.
+- **Critic loop (v1, v2 …):** write `borrowings_v{cycle}.md` in `.inhabited/`. One file per critic cycle; update in-place if the cycle restarts on the same build.
 - **ICP loop:** write `borrowings_iter_{N}.md` per iteration (where N is the ICP iteration index).
 
 Both files must be complete before the Designer returns "build done." The critic reads the borrowings file in full before scoring any rubric factor.

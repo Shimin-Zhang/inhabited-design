@@ -5,7 +5,9 @@ File conventions, subagent prompt templates, and the loop logic for the inhabite
 ## Directory structure
 
 ```
-output_<run_id>/
+.inhabited/                 # all skill-generated files for this project live here (add to .gitignore)
+  inhabited.md              # stable per-project context (teach gate) — survives across runs
+  pipeline_status.md        # 14-step run progress (resume index)
   sampling.md               # seeded sample (framing + designer + seeds + constraint + competitors + domain refs + typography) — frozen at v1 except for iteration domain re-samples
   framing.md                # chosen framing and framing-seed refs
   claude_designer.md        # persona, generated in sampled practitioner's voice
@@ -73,7 +75,7 @@ Each critic verdict saves to `v1_critic/critic_verdict_{cycle}.md`. Mid-loop re-
 
 ```
 # Critic loop (runs once, on v1, before the ICP loop)
-build_path = output_<run_id>/designer/index.html  # v1, built honoring sampling.md
+build_path = .inhabited/designer/index.html  # v1, built honoring sampling.md
 cycle = 0
 while True:
   cycle += 1
@@ -82,9 +84,9 @@ while True:
     break
   spawn_critic_subagent(
     persona=claude_critic.md,
-    sampling=output_<run_id>/sampling.md,
-    framing=output_<run_id>/framing.md,
-    inspiration=output_<run_id>/inspiration.md,
+    sampling=.inhabited/sampling.md,
+    framing=.inhabited/framing.md,
+    inspiration=.inhabited/inspiration.md,
     designer_persona=claude_designer.md,
     build=build_path,
     saves_to=v1_critic/critic_verdict_{cycle}.md
@@ -97,8 +99,8 @@ while True:
     ask_user_about_stuck_factor()
   spawn_designer_subagent_rebuild(
     persona=claude_designer.md,
-    sampling=output_<run_id>/sampling.md,
-    framing=output_<run_id>/framing.md,
+    sampling=.inhabited/sampling.md,
+    framing=.inhabited/framing.md,
     verdict=v1_critic/critic_verdict_{cycle}.md,
     build=build_path,
     saves_to=build_path  # rebuild in place
@@ -138,10 +140,10 @@ loop:
     ask_user_about_stuck_factor()
   spawn_designer_subagent(
     persona=claude_designer.md,
-    sampling=output_<run_id>/sampling.md,
-    framing=output_<run_id>/framing.md,
+    sampling=.inhabited/sampling.md,
+    framing=.inhabited/framing.md,
     prev_build=build_path,
-    prev_bank=output_<run_id>/inspiration.md,
+    prev_bank=.inhabited/inspiration.md,
     feedback=iter_N/runner_feedback.md,
     saves_to=iter_N/designer/index.html
   )
@@ -242,7 +244,7 @@ For every distinct surface in the build, the Designer must produce viewport-boun
 5. **First-run / onboarding** — what the user sees the very first time they open this surface
 6. **Overflow / edge case** — long text, very many items, no permissions, etc. — whatever the surface's specific edge looks like
 
-Not every surface needs all six. The Designer judges which apply per surface — but **must explicitly list** which states are required and which are not, in `states_v{cycle}.md` at the project root. "Not applicable because …" is a valid entry; "I forgot about this state" is not.
+Not every surface needs all six. The Designer judges which apply per surface — but **must explicitly list** which states are required and which are not, in `states_v{cycle}.md` in `.inhabited/`. "Not applicable because …" is a valid entry; "I forgot about this state" is not.
 
 ### Verifiable condition
 
@@ -466,12 +468,12 @@ The adversarial critic scored your build below 10/10 on at least one factor. Rea
 
 Then:
 1. `Read` /path/to/sampling.md and /path/to/framing.md. Look at each picked entry. The low scores came from drift away from these picks.
-2. For each reference the critic said you did not honor, `Read` the saved image file in /path/to/output_<run_id>/references/. Look. Then borrow specifically.
+2. For each reference the critic said you did not honor, `Read` the saved image file in /path/to/.inhabited/references/. Look. Then borrow specifically.
 3. For each <10 factor, address its specific "rebuild list" items. Not patch — rebuild. Replacing one hex value is patching; re-deciding the layout logic from the framing and sampled inputs is rebuilding.
 4. For each "what's missing" item, surface it in the build. Make the missing borrowings visible. Make the constraint visible. Make the framing structural. Make the sampled designer's discipline structural.
 5. For each competitor with an incomplete converge/diverge table, complete the table — every significant design element, a deliberate verdict, a rationale, a build location.
 6. Re-screenshot to /path/to/v1_critic/screens/ after rebuild (`browser_resize 1280 800` → `browser_take_screenshot filename=...` → never fullPage: true).
-7. Save the rebuilt build to /path/to/output_<run_id>/designer/index.html (overwrite).
+7. Save the rebuilt build to /path/to/.inhabited/designer/index.html (overwrite).
 
 **Domain re-sample option:** If the critic's feedback reveals a gap in the inspiration bank — a register, texture, or material reference that your current 2 domain refs do not cover — you may request +2 additional domain refs via VS, subject to the cap (+6 total across all iterations). State the specific gap: which design element, which feedback cycle, why the current bank doesn't address it. See `domain-research-vs-protocol.md` §Iteration re-sample rule for the procedure.
 
@@ -558,10 +560,10 @@ The user reviewing your work is *exactly your target user*. Their feedback is vo
 
 Read in order:
 1. The implementation spec: /path/to/spec.md
-2. Your previous build: /path/to/{prev_iter}/designer/index.html (or output_<run_id>/designer/index.html if N=1)
-3. Your previous inspiration bank: /path/to/output_<run_id>/inspiration.md
+2. Your previous build: /path/to/{prev_iter}/designer/index.html (or .inhabited/designer/index.html if N=1)
+3. Your previous inspiration bank: /path/to/.inhabited/inspiration.md
 4. Reference folders (existing images you can re-open):
-   - /path/to/output_<run_id>/references/
+   - /path/to/.inhabited/references/
    - /path/to/iter_*/references/  (any prior iteration's added refs)
 5. The ICP's latest feedback: /path/to/iter_{N}/runner_feedback.md
 

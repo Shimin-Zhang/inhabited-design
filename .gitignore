@@ -7,7 +7,9 @@ Thumbs.db
 .vscode/
 
 # Per-session run artifacts the skill generates in the *target project* (never the skill
-# itself). Listed here as a guard in case a run is ever executed from inside this repo.
+# itself). They now all live under .inhabited/; the individual entries below remain as
+# legacy guards in case a run is ever executed from inside this repo.
+.inhabited/
 sampling.md
 pipeline_status.md
 inhabited.md

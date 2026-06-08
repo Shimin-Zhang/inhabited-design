@@ -1,6 +1,6 @@
 # Teach Protocol
 
-A one-time per-project setup that captures the **stable** design context (App X, ICP, accessibility) into `inhabited.md` at the project root. The scoring rubric is fixed at the default 7 factors and is not part of the per-project context. Aesthetic and brand decisions — voice, theme, references, design principles — are synthesized downstream from the sampled framing, designer, seeds, and competitors, and live in `claude_designer.md` (written in Step 12). Capturing them here biases the VS process.
+A one-time per-project setup that captures the **stable** design context (App X, ICP, accessibility) into `inhabited.md` in `.inhabited/`. The scoring rubric is fixed at the default 7 factors and is not part of the per-project context. Aesthetic and brand decisions — voice, theme, references, design principles — are synthesized downstream from the sampled framing, designer, seeds, and competitors, and live in `claude_designer.md` (written in Step 12). Capturing them here biases the VS process.
 
 ## When to run
 
@@ -13,7 +13,7 @@ Re-run only when:
 
 ## Source priority
 
-1. **`inhabited.md` at project root** — authoritative if present and complete
+1. **`inhabited.md` in `.inhabited/`** — authoritative if present and complete
 2. **README.md, CLAUDE.md, package.json** — for project name, tech stack, stated purpose, target audience if documented
 3. **AskUserQuestion** — only for gaps the codebase can't fill
 
@@ -57,7 +57,7 @@ Last updated: {{YYYY-MM-DD}}
 
 ## Procedure
 
-1. **Initialize pipeline status.** If `pipeline_status.md` does not exist at the project root, create it with all 14 steps at `pending` per `pipeline-status-protocol.md`. Then `Edit` Step 1's row to `in_progress` before beginning work.
+1. **Initialize the working directory + pipeline status.** Create the `.inhabited/` directory at the project root if it doesn't exist — every file the skill generates lives there. If `.inhabited/pipeline_status.md` does not exist, create it with all 14 steps at `pending` per `pipeline-status-protocol.md`. Then `Edit` Step 1's row to `in_progress` before beginning work.
 
 2. **Read existing project files in parallel** — `inhabited.md`, `README.md`, `CLAUDE.md`, `package.json`; `Glob` for `brand.*`, `design-system.*`, `tokens.*`. If `inhabited.md` exists and has every required section filled (no `{{...}}` left), skip to Step 6 — mark Step 1 `done` and proceed to sampling.
 

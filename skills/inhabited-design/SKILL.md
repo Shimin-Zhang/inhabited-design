@@ -39,11 +39,15 @@ Before the teach gate (Step 1), confirm the environment provides one tool from e
 | Web search | Anti-defaults research (Step 11), competitor/domain lookups | `WebSearch` | Brave Search MCP, or any web-search tool |
 | A scripting runtime via Bash | The deterministic ms-sample gate | `python3` | node, ruby, perl — any language that emits `SEED=…` / `PICKS=…` from a seeded RNG, replayable by an auditor |
 
+**The driving model must be vision-capable.** The pixel-verification gate requires the model to *see* and judge rendered screenshots — run this on a vision model (Opus or Sonnet). It will not work on Haiku.
+
 The tool names used throughout the protocol files (`browser_take_screenshot`, `WebSearch`, `python3 -c "…"`) are **reference implementations**, not hard requirements — any equivalent satisfies the capability, as long as the sampling gate's stdout stays verbatim-replayable.
 
 ## Setup
 
 Run the preflight (above), read `inhabited.md` (or run the teach flow to write one), confirm the product register in one phrase model-side, and pick a run mode (see §Run modes — `interactive` default, `semi-auto`, `auto`, or `lite`). ICP specificity is the strongest reproducibility lever — "designer for a fitness app targeting first-time marathoners in the Midwest" produces tighter output than "designer for fitness apps."
+
+**Working directory.** Every file the skill generates for a project — `inhabited.md`, `pipeline_status.md`, `sampling.md`, the `claude_*.md` personas, the inspiration bank, downloaded `references/` images, and the build (`designer/`, `iter_N/`, `final/`) — lives under a single **`.inhabited/`** directory at the project root. Create it if absent; all relative paths in the protocol files resolve under it. Suggest adding `.inhabited/` to the project's `.gitignore`.
 
 ## The six VS-sampled inputs
 
@@ -64,7 +68,7 @@ Steps 9 (Domain research VS) and 11 (Anti-defaults research) contribute filtered
 
 14 steps in order. **Step 1 runs in the main conversation** (it uses `AskUserQuestion`). **Steps 2–14 run in dispatched subagents** — the main conversation dispatches, receives the subagent's return artifact, handles present+confirm with the user (interactive mode), then dispatches the next step. The **(present + confirm)** / **(model-side)** tags below describe what happens AFTER the subagent returns. **Each step's full discipline lives in the linked protocol file; the dispatched subagent reads it before executing.**
 
-**Pipeline status (resume).** Before Step 1, `Read` `pipeline_status.md` at the project root if it exists. If any steps are `done`, resume from the first `pending`/`in_progress`/`failed` step rather than re-running prior steps. Mark each step `in_progress` before beginning its work and `done` on completion. The file is at the project root alongside `inhabited.md` and `sampling.md`. Full discipline: `pipeline-status-protocol.md`.
+**Pipeline status (resume).** Before Step 1, `Read` `pipeline_status.md` in `.inhabited/` if it exists. If any steps are `done`, resume from the first `pending`/`in_progress`/`failed` step rather than re-running prior steps. Mark each step `in_progress` before beginning its work and `done` on completion. The file is in `.inhabited/` alongside `inhabited.md` and `sampling.md`. Full discipline: `pipeline-status-protocol.md`.
 
 1. **Teach gate** — read `inhabited.md` or run the teach flow. (main convo) → `teach-protocol.md`
 2. **Framings VS** — read `framing-poles.md` (11 style-pole quotas, sci/instrument capped at 2/40 ≈ 5%); **generate ≈40 framings to quota** (no curated bank). (present + confirm) → `framing-protocol.md`
@@ -110,7 +114,7 @@ Full protocol: `inspiration-bank-protocol.md` §Per-iteration image fill.
 
 ## Deliverable
 
-The output is a single self-contained `index.html` (latest revision at `output_<run_id>/designer/index.html`; converged build at `output_<run_id>/final/index.html`). **That file *is* the design** — a high-fidelity, reviewable artifact, not code wired into an application. Putting the design into a real product is a separate handoff: re-implement it in your framework, or feed the HTML to a code-integration step. This skill's job ends when the design converges.
+The output is a single self-contained `index.html` (latest revision at `.inhabited/designer/index.html`; converged build at `.inhabited/final/index.html`). **That file *is* the design** — a high-fidelity, reviewable artifact, not code wired into an application. Putting the design into a real product is a separate handoff: re-implement it in your framework, or feed the HTML to a code-integration step. This skill's job ends when the design converges.
 
 ## Hard constraints
 

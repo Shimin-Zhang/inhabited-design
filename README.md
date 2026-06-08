@@ -50,7 +50,7 @@ the orchestration map.
 ## What you get
 
 The deliverable is a single self-contained `index.html` (the converged build lands at
-`output_<run_id>/final/index.html`). **That file *is* the design** — a high-fidelity,
+`.inhabited/final/index.html`). **That file *is* the design** — a high-fidelity,
 reviewable artifact, not code wired into your application. Putting it into a real product
 is a separate handoff: re-implement it in your framework, or feed the HTML to a
 code-integration step.
@@ -64,9 +64,13 @@ This repo is both a Claude Code **plugin marketplace** and the plugin it serves.
 ```text
 /plugin marketplace add Shimin-Zhang/inhabited-design
 /plugin install inhabited-design@inhabited-design
+/reload-plugins
 ```
 
-Pull future updates with `/plugin marketplace update inhabited-design`.
+Pull future updates with `/plugin marketplace update inhabited-design`. Installed as a
+plugin, the skill is **namespaced** — invoke it as `/inhabited-design:inhabited-design`
+(a manual install uses the bare `/inhabited-design`); the run-mode keyword is the
+argument, e.g. `/inhabited-design:inhabited-design lite`.
 
 ### Manual install
 
@@ -79,7 +83,7 @@ cp -r inhabited-design/skills/inhabited-design ~/.claude/skills/   # personal
 cp -r inhabited-design/skills/inhabited-design <your-project>/.claude/skills/
 ```
 
-Then invoke it in a Claude Code session (see triggers below). Run modes:
+Then invoke it in a Claude Code session (see triggers below). Run modes (plugin installs prefix the namespace, e.g. `/inhabited-design:inhabited-design auto`):
 
 - `/inhabited-design` — **interactive** (default): confirm every VS pick.
 - `/inhabited-design semi-auto` — confirm only the framing + designer picks; the rest fire through.
@@ -91,6 +95,9 @@ Then invoke it in a Claude Code session (see triggers below). Run modes:
 The pipeline needs one tool from each capability class — verify them before a run (it
 preflights and stops if any is missing, rather than failing mid-pipeline):
 
+- **A vision-capable model** — the pixel-verification gate judges rendered screenshots, so
+  the driving model must be able to see images. Run on Opus or Sonnet; **it will not work
+  on Haiku.**
 - **A headless browser with screenshot-to-file** — Playwright MCP, Chrome DevTools MCP, or
   equivalent. Required for the pixel-verification gate (DOM-only review is blocked).
 - **A web-search tool** — `WebSearch`, Brave Search MCP, or equivalent. Required for

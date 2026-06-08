@@ -1,10 +1,10 @@
 # Pipeline Status Protocol
 
-A discipline for tracking 14-step pipeline progress in `pipeline_status.md` at the project root, enabling resume across sessions, user vetoes, or context loss.
+A discipline for tracking 14-step pipeline progress in `pipeline_status.md` in `.inhabited/`, enabling resume across sessions, user vetoes, or context loss.
 
 ## File format
 
-`pipeline_status.md` lives at the project root alongside `inhabited.md` and `sampling.md`:
+`pipeline_status.md` lives in `.inhabited/` alongside `inhabited.md` and `sampling.md`:
 
 ```markdown
 # Pipeline Status
@@ -68,7 +68,7 @@ A step is `done` only when its named artifact exists and matches its spec. Marki
 
 ## Discipline
 
-**Read-on-startup.** Before Step 1, `Read` `pipeline_status.md` if it exists at the project root. Find the first step whose status is not `done` — resume from there, NOT from Step 1. Before resuming, re-read all artifacts produced by prior `done` steps: minimum re-read set is `inhabited.md`, `sampling.md`, any persona files (`claude_designer.md`, `claude_icp.md`, `claude_critic.md`), `claude_anti_defaults.md`, and any borrowings file. Conversation context is lost across sessions; the files are the state.
+**Read-on-startup.** Before Step 1, `Read` `pipeline_status.md` if it exists in `.inhabited/`. Find the first step whose status is not `done` — resume from there, NOT from Step 1. Before resuming, re-read all artifacts produced by prior `done` steps: minimum re-read set is `inhabited.md`, `sampling.md`, any persona files (`claude_designer.md`, `claude_icp.md`, `claude_critic.md`), `claude_anti_defaults.md`, and any borrowings file. Conversation context is lost across sessions; the files are the state.
 
 If the file does not exist, initialize it with all 14 steps at `pending` using the template at the top of this file, then proceed to Step 1.
 
