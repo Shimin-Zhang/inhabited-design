@@ -55,6 +55,10 @@ reviewable artifact, not code wired into your application. Putting it into a rea
 is a separate handoff: re-implement it in your framework, or feed the HTML to a
 code-integration step.
 
+Everything else the run produces — the seeded `sampling.md`, the personas, the inspiration
+bank, downloaded reference images, screenshots, and every iteration — lives under a single
+`.inhabited/` directory at the project root. Add it to your project's `.gitignore`.
+
 ## Installation
 
 This repo is both a Claude Code **plugin marketplace** and the plugin it serves.
@@ -71,6 +75,9 @@ Pull future updates with `/plugin marketplace update inhabited-design`. Installe
 plugin, the skill is **namespaced** — invoke it as `/inhabited-design:inhabited-design`
 (a manual install uses the bare `/inhabited-design`); the run-mode keyword is the
 argument, e.g. `/inhabited-design:inhabited-design lite`.
+
+> If `/plugin` isn't recognized, Claude Code is out of date — update it
+> (`npm i -g @anthropic-ai/claude-code@latest`, or `brew upgrade claude-code`) and retry.
 
 ### Manual install
 
