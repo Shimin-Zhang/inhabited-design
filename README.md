@@ -47,6 +47,14 @@ iteration so the reviewer always sees real images in place.
 Full depth lives in the protocol files under [`references/`](references/); `SKILL.md` is
 the orchestration map.
 
+## What you get
+
+The deliverable is a single self-contained `index.html` (the converged build lands at
+`output_<run_id>/final/index.html`). **That file *is* the design** — a high-fidelity,
+reviewable artifact, not code wired into your application. Putting it into a real product
+is a separate handoff: re-implement it in your framework, or feed the HTML to a
+code-integration step.
+
 ## Installation
 
 This repo is both a Claude Code **plugin marketplace** and the plugin it serves.
@@ -71,9 +79,27 @@ cp -r inhabited-design/skills/inhabited-design ~/.claude/skills/   # personal
 cp -r inhabited-design/skills/inhabited-design <your-project>/.claude/skills/
 ```
 
-Then invoke it in a Claude Code session (see triggers below). Run
-`/inhabited-design auto` for non-interactive execution; the default is interactive,
-pausing to present and confirm each VS pick.
+Then invoke it in a Claude Code session (see triggers below). Run modes:
+
+- `/inhabited-design` — **interactive** (default): confirm every VS pick.
+- `/inhabited-design semi-auto` — confirm only the framing + designer picks; the rest fire through.
+- `/inhabited-design auto` — non-interactive: all picks fire through.
+- `/inhabited-design lite` — budget single-pass (~200–350k tokens): framing + designer + typography, no critic loop, ICP capped at 2 iterations. A strong v1, not a guaranteed perfect score.
+
+## Requirements
+
+The pipeline needs one tool from each capability class — verify them before a run (it
+preflights and stops if any is missing, rather than failing mid-pipeline):
+
+- **A headless browser with screenshot-to-file** — Playwright MCP, Chrome DevTools MCP, or
+  equivalent. Required for the pixel-verification gate (DOM-only review is blocked).
+- **A web-search tool** — `WebSearch`, Brave Search MCP, or equivalent. Required for
+  anti-defaults research and competitor/domain lookups.
+- **A scripting runtime via Bash** — `python3` by default; node/ruby/any language works.
+  Runs the deterministic sampling gate.
+
+Budget ≈200k tokens per iteration × 3–5 iterations for a full run; use `lite` for a
+cheaper single pass.
 
 ## When to use
 

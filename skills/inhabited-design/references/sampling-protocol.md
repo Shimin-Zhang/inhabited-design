@@ -30,6 +30,8 @@ For pool size `N`, pick count `K`:
 python3 -c "import random,time,sys; n,k=int(sys.argv[1]),int(sys.argv[2]); s=int(time.time()*1000); print(f'SEED={s}'); print(f'PICKS={sorted(random.Random(s).sample(range(n),k))}')" <N> <K>
 ```
 
+**Language is not fixed.** `python3` is the reference implementation. Any language works (node, ruby, perl, …) as long as it opens a fresh `int(time*1000)` seed, prints `SEED=<seed>` and `PICKS=<sorted indices>`, and is replayable by an auditor. The capability — a seeded RNG via Bash with verbatim stdout — is the requirement, not the specific binary.
+
 Stdout shape (`N=6`, `K=2`):
 
 ```
@@ -98,9 +100,16 @@ Every VS step pauses after sampling to present the pool, the seed, the chosen pi
 
 Every override is logged with the original sampled pick alongside the final accepted pick. The "picks are non-negotiable mid-loop" rule applies to the **model** (subagents cannot re-roll for taste); only the **human** can override.
 
-## Auto mode
+## Run modes
 
-Invoke `/inhabited-design auto` to skip the present + confirm pauses. All VS Steps 2–10 fire through without confirmation; audit trail records `mode: auto` at the top of `sampling.md`. Full details: SKILL.md §Auto mode.
+Mode sets the confirmation cadence (and, for `lite`, the depth). The audit trail records `mode: <mode>` at the top of `sampling.md`. Canonical definitions live in SKILL.md §Run modes:
+
+- **interactive** (default) — present + confirm every pick.
+- **`semi-auto`** (`/inhabited-design semi-auto`) — confirm only the framing and designer picks; seeds, constraint, competitors, and typography fire through.
+- **`auto`** (`/inhabited-design auto`) — all VS Steps 2–10 fire through without confirmation.
+- **`lite`** (`/inhabited-design lite`) — framing + designer + typography only; skips Steps 6–9 and the critic loop; ICP loop capped at 2 iterations.
+
+A user may interrupt any non-interactive mode and switch to interactive for the remaining steps; document the switch in `sampling.md`.
 
 ## Status-write integration
 

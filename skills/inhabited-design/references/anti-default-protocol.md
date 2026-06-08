@@ -12,7 +12,7 @@ What reads as "AI-generated design" shifts faster than any skill file can track.
 
 ## Search strategy
 
-Run **3–6 WebSearch queries**, mixing generic AI-design tells with domain-specific tropes.
+Run **3–6 web-search queries** (via `WebSearch`, Brave Search, or any web-search tool — see SKILL.md §Requirements & preflight), mixing generic AI-design tells with domain-specific tropes. If no web-search tool is available, mark Step 11 `failed` per `pipeline-status-protocol.md` and surface it; do not fabricate tells.
 
 **Generic queries (pick 2–3):**
 - "signs of AI generated web design {{current year}}"

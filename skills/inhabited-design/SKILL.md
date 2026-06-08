@@ -2,7 +2,7 @@
 name: inhabited-design
 description: Builds polished, target-user-rated web apps/pages/tools/assets via Verbalized Sampling at every input — framing, designer voice, seeds, constraint, competitors, typography. Use when you want every design choice to trace to a deterministic random sample drawn from an enumerated pool rather than model reach. Triggers on phrases like "iterate to a perfect score," "no canon," "really diversify the inspiration," "use IFG/VS," or explicit "use inhabited-design."
 user-invocable: true
-argument-hint: "[auto]"
+argument-hint: "[semi-auto | auto | lite | teach]"
 license: Apache 2.0. See NOTICE.md for attribution.
 ---
 
@@ -29,9 +29,21 @@ A pipeline that turns "build me X for Y" into something that hits target-user-ra
 
 ≈200k tokens per iteration (critic cycle + ICP cycle each count). VS setup adds 3–5k tokens per step before the first build. Plan for 3–5 iterations to convergence. Confirm budget tolerance with the user upfront — stricter rubrics or highly constrained framings can extend convergence. This is a convergence pipeline for things worth shipping, not a quick-prototype path.
 
+## Requirements & preflight
+
+Before the teach gate (Step 1), confirm the environment provides one tool from each capability class. If any is missing, tell the user what to enable and **stop** — don't start a run that hard-fails mid-pipeline after spending tokens.
+
+| Capability | Needed for | Reference tool | Equivalents |
+|---|---|---|---|
+| Headless browser + screenshot-to-file | Pixel-verification gate (Steps 13–14); DOM-only review is blocked | Playwright MCP (`browser_resize` + `browser_take_screenshot filename=…`) | Chrome DevTools MCP, or any browser-automation tool that resizes the viewport and writes a screenshot to disk |
+| Web search | Anti-defaults research (Step 11), competitor/domain lookups | `WebSearch` | Brave Search MCP, or any web-search tool |
+| A scripting runtime via Bash | The deterministic ms-sample gate | `python3` | node, ruby, perl — any language that emits `SEED=…` / `PICKS=…` from a seeded RNG, replayable by an auditor |
+
+The tool names used throughout the protocol files (`browser_take_screenshot`, `WebSearch`, `python3 -c "…"`) are **reference implementations**, not hard requirements — any equivalent satisfies the capability, as long as the sampling gate's stdout stays verbatim-replayable.
+
 ## Setup
 
-Read `inhabited.md` (or run the teach flow to write one), confirm the product register in one phrase model-side, set mode via `/inhabited-design auto` for non-interactive execution (default is interactive). ICP specificity is the strongest reproducibility lever — "designer for a fitness app targeting first-time marathoners in the Midwest" produces tighter output than "designer for fitness apps."
+Run the preflight (above), read `inhabited.md` (or run the teach flow to write one), confirm the product register in one phrase model-side, and pick a run mode (see §Run modes — `interactive` default, `semi-auto`, `auto`, or `lite`). ICP specificity is the strongest reproducibility lever — "designer for a fitness app targeting first-time marathoners in the Midwest" produces tighter output than "designer for fitness apps."
 
 ## The six VS-sampled inputs
 
@@ -60,11 +72,11 @@ Steps 9 (Domain research VS) and 11 (Anti-defaults research) contribute filtered
 4. **ms-sample framing** — external Bash gate; stdout `SEED=...` + `PICKS=...` is the only source of truth; lock to `sampling.md`. (model-side) → `sampling-protocol.md` §The external sampling gate
 5. **Designer VS** — 10 discipline categories × 2 candidates each (framing-fit + non-canon, generated to discipline rosters; no curated bank); brief-fitness gate (≤3 rounds); ms-sample 1. (present + confirm) → `designer-vs-protocol.md`
 6. **Seeds VS** — 10 artifact categories × 4 candidates each; brief-fitness gate; ms-sample 2 seeds. (present + confirm) → `seeds-vs-protocol.md`
-7. **Constraint VS** — enumerate 6–8 candidates live under the framing; filter to 3–4; ms-sample 1 (or 2 if the framing is otherwise generic). (present + confirm) → `sampling-protocol.md` §Constraint VS
+7. **Constraint VS** — generate 20 candidates live under the framing; brief-fitness filter to 6–8; ms-sample 1 (or 2 if the framing is otherwise generic). (present + confirm) → `sampling-protocol.md` §Constraint VS
 8. **Competitors VS** — 10 positioning categories × 2 candidates each; ms-sample 2; converge/diverge judgment table per competitor. Skipping the table caps the critic's `fits competitor judgment` at 0. (present + confirm) → `competitor-vs-protocol.md`
 9. **Domain research VS** — adjacent-domain refs with brief-fitness filter; 3–5 added to the inspiration bank. (present + confirm) → `domain-research-vs-protocol.md`
 10. **Typography VS** — typeface candidates verbalized against 3-word brand voice + physical-object anchor; banned-canon list rejects + repools (only model-side resample exception). (present + confirm) → `typography-vs-protocol.md`
-11. **Anti-defaults research** — 3–6 WebSearch queries on current AI-design tells; distill 8–15 patterns into `claude_anti_defaults.md`. Hard-fails if WebSearch unavailable. (model-side) → `anti-default-protocol.md`
+11. **Anti-defaults research** — 3–6 web-search queries on current AI-design tells; distill 8–15 patterns into `claude_anti_defaults.md`. Hard-fails if no web-search tool is available. (model-side) → `anti-default-protocol.md`
 12. **Designer persona + per-axis output protocol** — generate `claude_designer.md` in the sampled practitioner's voice; lineage block mandatory; 10 output axes via separate sub-passes with restricted context per axis, logged to `borrowings_v{N}.md` as an attribute-binding manifest. Also generate `claude_icp.md` and `claude_critic.md`. (model-side) → `designer-persona-template.md`, `axis-decomposition-protocol.md`
 13. **Critic loop** — 4-factor rubric (fits framing / fits sampled inputs / fits competitor judgment / fits axis manifestation) until 10/10 + constraint honored + slop gate PASS + state-coverage gate. Max 5 cycles. (model-side) → `adversarial-critic-protocol.md`
 14. **ICP loop** — 7-factor rubric (Usability, Flare, Personality, Visual Design, Originality, Visual Impressiveness, Wow Factor) until all factors at max; **image fill at the end of each iteration** (stock only — Unsplash/Pexels) so the ICP reviews real images every pass. (model-side) → `iteration-loop.md`, `scoring-rubric.md`
@@ -96,21 +108,32 @@ Photography is filled **at the end of each design iteration**, not in a separate
 
 Full protocol: `inspiration-bank-protocol.md` §Per-iteration image fill.
 
+## Deliverable
+
+The output is a single self-contained `index.html` (latest revision at `output_<run_id>/designer/index.html`; converged build at `output_<run_id>/final/index.html`). **That file *is* the design** — a high-fidelity, reviewable artifact, not code wired into an application. Putting the design into a real product is a separate handoff: re-implement it in your framework, or feed the HTML to a code-integration step. This skill's job ends when the design converges.
+
 ## Hard constraints
 
 Every gate listed in the pipeline is enforced per-session — violation blocks the downstream step, not a warning. The highest-value gates to keep in working memory:
 
 - **Teach gate** — no sampling, no persona, no design code until `inhabited.md` is confirmed complete. → `teach-protocol.md`
-- **Sampling gate** — every sampled input has VS provenance AND executes via external Bash `python3 -c "..."` whose stdout is the only source of truth. The model is forbidden from computing picks internally. Any audit reader can replay the seed with `random.Random(seed).sample(range(N), K)`. → `sampling-protocol.md`
+- **Sampling gate** — every sampled input has VS provenance AND executes via an external Bash scripting call (`python3 -c "..."` by default; any language works) whose stdout is the only source of truth. The model is forbidden from computing picks internally. Any audit reader can replay the seed with `random.Random(seed).sample(range(N), K)` (or the equivalent in the chosen language). → `sampling-protocol.md`
 - **Critic gate** — all 4 factors at 10/10 + constraint honored + slop gate PASS + state-coverage gate before the ICP loop starts. Max 5 cycles before escalating. → `adversarial-critic-protocol.md`
-- **Pixel verification gate (Jesse Vincent gate)** — both ICP and Designer subagents capture viewport-bounded screenshots (`browser_resize 1280 800` → `browser_take_screenshot filename=...` → `Read` the saved file) at every review. DOM-only review is blocked. → `iteration-loop.md`
+- **Pixel verification gate (Jesse Vincent gate)** — both ICP and Designer subagents capture viewport-bounded screenshots via a browser-automation MCP (Playwright, Chrome DevTools, …): `browser_resize 1280 800` → `browser_take_screenshot filename=...` → `Read` the saved file, at every review. DOM-only review is blocked. → `iteration-loop.md`
 - **Image file size guard** — every downloaded or generated reference ≤1600px on longest edge; only png/jpg/jpeg/gif/webp formats saved. → `file-size-guards.md`
 
 Other gates (inspiration-bank composition, anti-default research, typography-VS, axis decomposition, borrowing summary, palette borrowing) are enforced per their step's protocol file. `claude_anti_defaults.md` (researched per-project) is the moving target for "what to avoid" — there is no hardcoded technical floor; the anti-defaults research surfaces whatever is currently overdone.
 
-## Auto mode
+## Run modes
 
-Invoke as `/inhabited-design auto`. VS Steps 2–10 run non-interactively — candidates enumerated, reasoning verbalized, ms-sample picks logged to `sampling.md` without confirmation pauses. Output is identical to interactive mode in VS provenance and determinism. Users can interrupt at any point and switch to interactive for remaining steps; document the switch in `sampling.md`. Full procedure: `sampling-protocol.md` §Auto mode.
+Invoke as `/inhabited-design [mode]`. Mode changes only the confirmation cadence and (for `lite`) the depth — VS provenance and determinism are identical across all of them. The main convo records the mode at the top of `sampling.md`.
+
+- **interactive** (default) — present + confirm every VS pick (Steps 2–10) before it conditions the next step. Maximum control.
+- **`semi-auto`** — pause only on the two highest-leverage picks: the **framing** (master conditioning variable) and the **designer**. Seeds, constraint, competitors, and typography fire through without pauses. Best control-to-speed balance.
+- **`auto`** — VS Steps 2–10 run non-interactively; picks logged to `sampling.md` without confirmation pauses. Users can interrupt and switch to interactive for the remaining steps.
+- **`lite`** — budget path (≈200–350k tokens). Samples only framing + designer + typography; **skips** seeds, constraint, competitors, and domain-research VS (Steps 6–9) and the critic loop (Step 13); caps the ICP loop at 2 iterations. Produces a strong v1, not a guaranteed perfect score — originality/wow may not reach 10 without the full inspiration set.
+
+Full procedure: `sampling-protocol.md` §Run modes.
 
 ## Common pitfalls
 
@@ -134,14 +157,14 @@ Invoke as `/inhabited-design auto`. VS Steps 2–10 run non-interactively — ca
 | `teach-protocol.md` | App X / ICP / brand context capture into `inhabited.md` |
 | `framing-protocol.md` | Generate-≈40-to-pole-quota + scientific cap + ban-list + Bash ms-sample 1 |
 | `framing-poles.md` | 11 style-pole quotas + scientific cap + ban-list + reach-beyond mandate (replaces the 200-entry bank) |
-| `sampling-protocol.md` | External Bash ms-sample gate, present+confirm pattern, auto mode, Constraint VS |
+| `sampling-protocol.md` | External Bash ms-sample gate, present+confirm pattern, run modes, Constraint VS |
 | `designer-vs-protocol.md` | 10 discipline categories × 2 candidates (fit + non-canon), brief-fitness gate, roster-based generation |
 | `designer-disciplines.md` | 10 discipline reach-into rosters + graphic-design anti-canon ban-list (replaces the ~100-entry bank) |
 | `seeds-vs-protocol.md` | 10 artifact categories × 4 candidates, sample 2, borrowing-productivity test |
 | `competitor-vs-protocol.md` | 10 positioning categories × 2 candidates, sample 2, converge/diverge tables |
 | `domain-research-vs-protocol.md` | Adjacent-domain VS, brief-fitness filter, iteration re-sample rule |
 | `typography-vs-protocol.md` | Typeface VS + banned-canon list + repool exception |
-| `anti-default-protocol.md` | WebSearch for current AI-design tells; distill to `claude_anti_defaults.md` |
+| `anti-default-protocol.md` | Web search for current AI-design tells; distill to `claude_anti_defaults.md` |
 | `designer-persona-template.md` | Persona in sampled practitioner voice; lineage block; 3 hard gates |
 | `icp-persona-template.md` | ICP persona as honest, non-charitable target-user reviewer |
 | `adversarial-critic-protocol.md` | 4-factor critic rubric, slop gate, state-coverage gate, persona-discipline gate |

@@ -138,7 +138,8 @@ loop:
     ask_user_about_stuck_factor()
   spawn_designer_subagent(
     persona=claude_designer.md,
-    spec=spec_path,
+    sampling=output_<run_id>/sampling.md,
+    framing=output_<run_id>/framing.md,
     prev_build=build_path,
     prev_bank=output_<run_id>/inspiration.md,
     feedback=iter_N/runner_feedback.md,
