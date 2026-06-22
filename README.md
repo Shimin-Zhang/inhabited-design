@@ -147,6 +147,15 @@ LICENSE                     Apache License 2.0
 NOTICE.md                   Attribution and inspirations
 ```
 
+## The eval loop, generalized
+
+Underneath the design vocabulary, the critic and ICP loops are an **eval harness**: a
+decomposed rubric, a judge that scores against it, and a gate that won't pass until the
+score stops moving. Here it grades a landing page. Pointed at a shipping AI feature, the
+same loop is the day job at [**Wolf Peach Labs**](https://wolfpeachlabs.com) — *evals for
+the AI features you're afraid to change*, where a moving score costs a good deal more than
+it does on a wordmark.
+
 ## Acknowledgments
 
 This skill is original work that draws conceptual inspiration from two frontend-design
